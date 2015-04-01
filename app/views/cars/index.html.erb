@@ -1,32 +1,39 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Listing Cars</h1>
-<h6>YAY! IS UP!</h6>
+<div class="jumbotron">
+  <h1 class="content-color">Hello, world!</h1>
+  <p class="content-color">...</p>
+  <p><a class="btn btn-lg item-button" style="background-color:black;" href="#" role="button">Learn more</a></p>
+</div>
+<div class="main-div">
+  <div class="col-md-6 table-container">
+      <table class="table">
+      <thead>
+        <tr>
+          <th>Color</th>
+          <th>Hp</th>
+          <th>Model</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
 
-<table id="cars-list">
-  <thead>
-    <tr>
-      <th>Color</th>
-      <th>Hp</th>
-      <th>Model</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+      <tbody>
+        <% @cars.each do |car| %>
+          <tr>
+            <td><%= car.color %></td>
+            <td><%= car.hp %></td>
+            <td><%= car.model %></td>
+            <td><%= link_to 'Show', car ,:class => "btn item-button"%></td>
+            <td><%= link_to 'Edit', edit_car_path(car) ,:class => "btn item-button"%></td>
+            <td><%= link_to 'Destroy', car, method: :delete, data: { confirm: 'Are you sure?'} ,:class => "btn item-button"%></td>
+          </tr>
+        <% end %>
+      </tbody>
+      </table>
+  </div>
+  <div class="col-md-5 buttons-zone-bla">
+    <%= link_to 'New Car', new_car_path ,:class => "btn item-button"%>
+  </div>
+  <br>
+</div>
 
-  <tbody>
-    <% @cars.each do |car| %>
-      <tr>
-        <td><%= car.color %></td>
-        <td><%= car.hp %></td>
-        <td><%= car.model %></td>
-        <td><%= link_to 'Show', car %></td>
-        <td><%= link_to 'Edit', edit_car_path(car) %></td>
-        <td><%= link_to 'Destroy', car, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Car', new_car_path %>

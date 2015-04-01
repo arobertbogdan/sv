@@ -16,7 +16,25 @@
 </head>
 <body>
 
-<%= yield %>
+<nav class="navbar navbar-default navbar-fixed-top navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" id="logo" href="#">CarMania</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="#">Home</a></li>
+            <li><%= link_to 'New Car', new_car_path %></li>
+            <li><a href="#contact">Contact</a></li>
+            <li class="dropdown">
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+<div class="container content">
+	<%= yield %>
+</div>
 
 </body>
 </html>
