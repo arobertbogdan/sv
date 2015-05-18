@@ -1,4 +1,16 @@
 Rails.application.routes.draw do
+
+  devise_scope :user do
+    get 'user/:id', to: 'users#profile', as: 'profile'
+  end
+
+  devise_for :users, :controllers => {:registrations => "users"}
+  resources :posts
+
+  put 'posts/:id/upvote', to: 'posts#upvote'
+  put 'posts/:id/downvote', to: 'posts#downvote'
+
+  root 'home#index'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
