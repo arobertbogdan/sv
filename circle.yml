@@ -1,0 +1,9 @@
+deployment:
+    production:
+        branch: master
+        commands:
+            - git push git@heroku.com:rabsv.git $CIRCLE_SHA1:refs/heads/master
+            - heroku run rake db:migrate --app rabsv
+machine:
+    ruby:
+        version: 2.2.0
