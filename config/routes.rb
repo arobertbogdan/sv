@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :comments
   devise_scope :user do
     get 'user/:id', to: 'users#profile', as: 'profile'
   end
