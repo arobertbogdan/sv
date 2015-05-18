@@ -16,13 +16,13 @@ ActiveRecord::Schema.define(version: 20150518153436) do
   create_table "comment_users", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "post_id"
-    t.integer  "parent_id"
+    t.integer  "comment_user_id"
     t.string   "content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
-  add_index "comment_users", ["parent_id"], name: "index_comment_users_on_parent_id"
+  add_index "comment_users", ["comment_user_id"], name: "index_comment_users_on_comment_user_id"
   add_index "comment_users", ["post_id"], name: "index_comment_users_on_post_id"
   add_index "comment_users", ["user_id"], name: "index_comment_users_on_user_id"
 

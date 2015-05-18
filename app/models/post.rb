@@ -4,17 +4,17 @@ class Post < ActiveRecord::Base
   has_many :comment_users
 
   def self.get_user_posts user
-    Post.where(:user_id => user.id).joins(:post_votes).select('posts.*', 'post_votes.vote_type')
+    Post.where(:user_id => user.id)
   end
 
   def up_vote user
-    @vote = PostVote.post_voted user.id , self.id
+    @vote = PostVote.find_by(user_id: user.id, post_id: self.id)
     logger.debug @vote
     apply_vote 1, user
   end
 
   def down_vote user
-    @vote = PostVote.post_voted user.id , self.id
+    @vote = PostVote.find_by(user_id: user.id, post_id: self.id)
     apply_vote -1, user
   end
 
