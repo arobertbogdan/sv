@@ -1,7 +1,8 @@
 /**
  * Created by smookygg on 18.05.2015.
  */
-$(document).ready(function(){
+var ready;
+ready = function() {
     $(".up_vote").on('click', function(){
         $.ajax({
             url: '/posts/' + this.getAttribute("post-id") + '/upvote',
@@ -18,4 +19,7 @@ $(document).ready(function(){
             console.log(data)
         });
     });
-});
+};
+
+$(document).ready(ready);
+$(document).on('page:load', ready);
