@@ -6,5 +6,5 @@ class User < ActiveRecord::Base
 
   has_many :post_votes
   has_many :posts
-  has_many :comment_users
+  has_many :comments
 end

@@ -12,5 +12,18 @@
 
 <p>
   <strong>Media:</strong>
-  <%= @post.media %>
+  <a><%= @post.media %></a>
 </p>
+
+<%= render partial: "comments/form"%>
+<%= render partial: "comments/comment", collection: @comments %>
+
+<script>
+    $(document).ready(function(){
+        $('.reply').click(function (event) {
+            var parent = $(event.target).parent();
+            parent.append("<%= escape_javascript(render partial: "comments/reply") %>");
+            parent.find("div.field").append('<input type="hidden" id="parent" name="parent_id" value="'+ this.id +'">');
+        });
+    });
+</script>

@@ -1,0 +1,9 @@
+<%= form_for Comment.new, :url => post_comment_reply_path(:post_id => @post.id) do |f| %>
+    <div class="field">
+      <%= f.text_area :body %>
+    </div>
+    <div class="actions">
+      <input type="submit" value="Send">
+      <input type="reset" value="Cancel">
+    </div>
+<% end %>

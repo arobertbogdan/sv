@@ -1,7 +1,7 @@
 class Post < ActiveRecord::Base
   belongs_to :user
   has_many :post_votes
-  has_many :comment_users
+  has_many :comments
 
   def self.get_user_posts user
     Post.where(:user_id => user.id)

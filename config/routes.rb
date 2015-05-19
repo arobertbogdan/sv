@@ -1,12 +1,13 @@
 Rails.application.routes.draw do
-
-  resources :comments
   devise_scope :user do
     get 'user/:id', to: 'users#profile', as: 'profile'
   end
 
   devise_for :users, :controllers => {:registrations => "users"}
-  resources :posts
+  resources :posts do
+    resource :comments
+    post 'comments/reply', to: 'comments#reply', as: 'comment_reply'
+  end
 
   put 'posts/:id/upvote', to: 'posts#upvote'
   put 'posts/:id/downvote', to: 'posts#downvote'
