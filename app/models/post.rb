@@ -7,6 +7,10 @@ class Post < ActiveRecord::Base
     Post.where(:user_id => user.id)
   end
 
+  def old
+    ApplicationHelper.time_diff created_at
+  end
+
   def up_vote user
     @vote = PostVote.find_by(user_id: user.id, post_id: self.id)
     logger.debug @vote
