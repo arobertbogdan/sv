@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   devise_scope :user do
     get 'user/:id', to: 'users#profile', as: 'profile'
+    post 'user/:id/follow', to: 'users#follow', as: 'follow'
   end
 
   devise_for :users, :controllers => {:registrations => "users"}

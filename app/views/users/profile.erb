@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-
+<%= link_to 'Follow', follow_path(:id => @user_id), method: :post %>
 
 <h1>Listing Posts</h1>
 
@@ -18,7 +18,7 @@
         <td><%= post.media %></td>
         <td>submited <span><%= post.old %></span> ago</td>
         <td><%= link_to post.count_comments, post %></td>
-        <% if  user_signed_in? && @user_id == current_user.id %>
+        <% if user_signed_in? && @user_id == current_user.id %>
             <td><%= link_to 'Edit', edit_post_path(post) %></td>
             <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
@@ -26,5 +26,14 @@
   <% end %>
   </tbody>
 </table>
+
+<div>
+  <h1>People you follow</h1>
+  <ul>
+    <% @followers.each do |follow| %>
+        <%= link_to follow.nickname, profile_path(:id => follow.follow_id) %>
+    <% end %>
+  </ul>
+</div>
 
 <br>
