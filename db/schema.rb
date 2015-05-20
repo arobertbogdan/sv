@@ -48,9 +48,9 @@ ActiveRecord::Schema.define(version: 20150520113310) do
   add_index "post_votes", ["user_id"], name: "index_post_votes_on_user_id"
 
   create_table "posts", force: :cascade do |t|
-    t.string   "title"
-    t.string   "description"
-    t.string   "media"
+    t.string   "title",                   null: false
+    t.string   "description",             null: false
+    t.string   "media",                   null: false
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
     t.integer  "rating",      default: 0

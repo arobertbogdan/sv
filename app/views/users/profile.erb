@@ -32,6 +32,7 @@
   <ul>
     <% @followers.each do |follow| %>
         <%= link_to follow.nickname, profile_path(:id => follow.follow_id) %>
+        <span><%= follow.count_new_posts current_user %></span>
     <% end %>
   </ul>
 </div>
