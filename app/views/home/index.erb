@@ -16,6 +16,7 @@
         <td><%= post.description %></td>
         <td><%= post.media %></td>
         <td>submited <span><%= post.old %></span> ago</td>
+        <td><%= link_to post.count_comments, post %></td>
       </tr>
 
   <% end %>

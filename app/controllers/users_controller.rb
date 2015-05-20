@@ -1,6 +1,7 @@
 class UsersController < Devise::RegistrationsController
     def profile
-      @posts = Post.get_user_posts current_user
+      @posts = Post.get_user_posts params[:id]
+      @user_id = params[:id]
     end
 
     private

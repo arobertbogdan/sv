@@ -15,6 +15,8 @@
   <a><%= @post.media %></a>
 </p>
 
+<td><%= link_to @post.count_comments, @post %></td>
+
 <%= render partial: "comments/form"%>
 <%= render partial: "comments/comment", collection: @comments %>
 

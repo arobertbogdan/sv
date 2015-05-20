@@ -2,7 +2,7 @@
   <p>
     <%= comment.body %>
   </p>
-  <p>created by <strong><%= comment.nickname %></strong></p>
+  <p>created by <strong><%= link_to comment.nickname, profile_path(:id => comment.reply_user_id) %></strong></p>
   <p>submited <span><%= comment.old %></span> ago</p>
   <a id="<%= comment.id %>" class="reply">Reply</a>
 

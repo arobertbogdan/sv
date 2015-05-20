@@ -4,11 +4,15 @@ class Post < ActiveRecord::Base
   has_many :comments
 
   def self.get_user_posts user
-    Post.where(:user_id => user.id)
+    Post.where(:user_id => user)
   end
 
   def old
     ApplicationHelper.time_diff created_at
+  end
+
+  def count_comments
+    "comments " + Comment.where(:post_id => self.id).count.to_s
   end
 
   def up_vote user
