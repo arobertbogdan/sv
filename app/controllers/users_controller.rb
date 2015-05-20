@@ -1,8 +1,11 @@
 class UsersController < Devise::RegistrationsController
+    before_action :authenticate_user!, :except => [:profile]
+
     def profile
       @posts = Post.get_user_posts params[:id]
       @user_id = params[:id].to_i
       @followers = Follow.get_user_followings params[:id]
+      @karma = Post.karma params[:id]
     end
 
     def follow

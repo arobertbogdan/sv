@@ -7,6 +7,12 @@ class Post < ActiveRecord::Base
     Post.where(:user_id => user)
   end
 
+  def self.karma user
+    sum = 0
+    Post.where(user_id: user).each{ |post| sum += post["rating"]}
+    sum
+  end
+
   def old
     ApplicationHelper.time_diff created_at
   end
