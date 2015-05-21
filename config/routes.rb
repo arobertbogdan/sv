@@ -13,7 +13,8 @@ Rails.application.routes.draw do
   put 'posts/:id/upvote', to: 'posts#upvote'
   put 'posts/:id/downvote', to: 'posts#downvote'
 
-  get '(:filter)', to: 'home#index', as: 'filter'
+  get '(:category)/(:filter)', to: 'home#index', as: 'filter'
+  get ':category/(:filter)', to: 'home#index', as: 'category'
 
   root 'home#index'
 

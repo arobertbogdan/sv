@@ -15,6 +15,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'therubyracer'
 gem 'devise'
 
+gem 'friendly_id'
 
 group :development, :test do
   gem 'sqlite3'
