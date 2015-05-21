@@ -14,3 +14,13 @@ Category.create(name: "movies")
 Category.create(name: "books")
 Category.create(name: "news")
 Category.create(name: "sports")
+
+user = User.create! :nickname => 'user1', :email => 'user1@gmail.com', :password => '1q2w3e4r5t', :password_confirmation => '1q2w3e4r5t'
+
+categories = Category.all
+
+categories.each{ |category|
+  10.times{
+    Post.create(title: "Post"+rand(100).to_s+category.name, description:"test", category_id: category.id, media: "test.com", user_id: user.id, rating: rand(4000) )
+  }
+}

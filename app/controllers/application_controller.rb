@@ -5,6 +5,6 @@ class ApplicationController < ActionController::Base
   before_action :categories
 
   def categories
-    @category = Category.all
+    @categories = Category.all
   end
 end

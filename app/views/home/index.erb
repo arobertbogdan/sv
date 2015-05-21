@@ -1,14 +1,14 @@
 <p id="notice"><%= notice %></p>
 
-<%= form_tag("/#{@filter}", method: "get") do %>
+<%= form_tag("#{@category}/#{@filter}", method: "get") do %>
   <%= label_tag(:search, "Search for:") %>
   <%= text_field_tag(:search) %>
   <%= submit_tag("Search") %>
 <% end %>
 
 <ul>
-  <li><%= link_to 'Hot', filter_path(:filter => :hot)%></li>
-  <li><%= link_to 'New', filter_path(:filter => :new)%></li>
+  <li><%= link_to 'Hot', @category==nil ? filter_path(:filter => :hot) : category_filter_path(:filter => :hot)%></li>
+  <li><%= link_to 'New', @category==nil ? filter_path(:filter => :new) : category_filter_path(:filter => :new)%></li>
 </ul>
 
 <h1>Listing Posts</h1>
