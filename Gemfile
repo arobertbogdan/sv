@@ -16,6 +16,7 @@ gem 'therubyracer'
 gem 'devise'
 
 gem 'friendly_id'
+gem 'will_paginate'
 
 group :development, :test do
   gem 'sqlite3'

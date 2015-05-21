@@ -16,20 +16,10 @@
 <table>
 
   <tbody>
-  <% @posts.each do |post| %>
-      <tr>
-        <td>
-          <a class="up_vote" post-id=<%= post.id %>>+</a>
-          <%= post.rating %>
-          <a class="down_vote" post-id=<%= post.id %>>-</a>
-        </td>
-        <td><%= link_to post.title, post %></td>
-        <td><%= post.description %></td>
-        <td><%= post.media %></td>
-        <td>submited <span><%= post.old %></span> ago</td>
-        <td><%= link_to post.count_comments, post %></td>
-      </tr>
-
-  <% end %>
+  <%= render @posts %>
   </tbody>
 </table>
+
+<div id="infinite-scrolling">
+  <%= will_paginate @posts%>
+</div>

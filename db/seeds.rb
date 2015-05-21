@@ -20,7 +20,7 @@ user = User.create! :nickname => 'user1', :email => 'user1@gmail.com', :password
 categories = Category.all
 
 categories.each{ |category|
-  10.times{
-    Post.create(title: "Post"+rand(100).to_s+category.name, description:"test", category_id: category.id, media: "test.com", user_id: user.id, rating: rand(4000) )
+  20.times{
+    Post.create(title: "Post"+rand(200).to_s+category.name, description:"test", category_id: category.id, media: "test.com", user_id: user.id, rating: rand(4000) )
   }
 }
