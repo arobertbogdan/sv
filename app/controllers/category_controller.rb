@@ -2,16 +2,16 @@ class CategoryController < ApplicationController
   before_action :authenticate_user!
 
   def subscribe
-    subscribe = Subscribe.new(:user_id => params[:user_id], :category_id => params[:category_id])
+    subscribe = Subscribe.new(:user_id => current_user.id, :category_id => params[:category_id])
     subscribe.save
-    SubscribeMailer.subscribe_on_category(subscribe.user, subscribe.category).deliver
-    respond_to do |format|
-      format.html { redirect_to root_path}
-      format.json { head :no_content }
-    end
+    #SubscribeMailer.subscribe_on_category(subscribe.user, subscribe.category).deliver
+    render :json => {:data => "OK", :status => 200}
   end
 
   def unsubscribe
-
+    subscribe = Subscribe.find_by(:user_id => current_user.id, :category_id => params[:category_id]).destroy
+    subscribe.save
+    #SubscribeMailer.unsubscribe_on_category(subscribe.user, subscribe.category).deliver
+    render :json => {:data => "OK", :status => 200}
   end
 end

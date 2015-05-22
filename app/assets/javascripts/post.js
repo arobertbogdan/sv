@@ -19,6 +19,30 @@ ready = function() {
             console.log(data)
         });
     });
+
+    var subscribe = $("#subscribe");
+    var unsubscribe = $("#unsubscribe");
+
+    subscribe.on('click', function(){
+        $.ajax({
+            url: '/category/' + this.getAttribute("category-id") + '/subscribe',
+            type: 'POST'
+        }).done(function (data){
+            console.log(data);
+            subscribe.hide();
+            unsubscribe.show();
+        });
+    });
+    unsubscribe.on('click', function(){
+        $.ajax({
+            url: '/category/' + this.getAttribute("category-id") + '/unsubscribe',
+            type: 'POST'
+        }).done(function (data){
+            console.log(data);
+            subscribe.show();
+            unsubscribe.hide();
+        });
+    });
 };
 
 $(document).ready(ready);

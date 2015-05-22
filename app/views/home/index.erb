@@ -1,11 +1,8 @@
 <p id="notice"><%= notice %></p>
 
-<% if @category != nil && user_signed_in? %>
-    <% if @category.is_subscribed current_user %>
-        <%= link_to 'Unsubscribe', subscribe_path(:user_id => current_user.id, :category_id => @category.id), method: :post%>
-    <% else %>
-        <%= link_to 'Subscribe', subscribe_path(:user_id => current_user.id, :category_id => @category.id), method: :post%>
-    <% end %>
+<% if @category != nil%>
+    <a <%= @category.is_subscribed(current_user) ? "" : "hidden" %> id="unsubscribe" category-id=<%= @category.id %> >Unsubscribe</a>
+    <a <%= @category.is_subscribed(current_user) ? "hidden" : "" %> id="subscribe" category-id=<%= @category.id %> >Subscribe</a>
 <% end %>
 
 

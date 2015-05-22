@@ -24,7 +24,6 @@ class Post < ActiveRecord::Base
 
   def up_vote user
     @vote = PostVote.find_by(user_id: user.id, post_id: self.id)
-    logger.debug @vote
     apply_vote 1, user
   end
 
@@ -61,6 +60,7 @@ class Post < ActiveRecord::Base
       if @vote == nil
         @vote = PostVote.create(user_id: user.id, post_id: id)
         @vote.vote_type = vote_type
+        self.rating += vote_type
       else
         if @vote.vote_type + vote_type == 0
           self.rating += 2 * vote_type
