@@ -10,4 +10,5 @@ class User < ActiveRecord::Base
   has_many :posts
   has_many :comments
   has_many :follows
+  has_many :subscribes
 end

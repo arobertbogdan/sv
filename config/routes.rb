@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   put 'posts/:id/upvote', to: 'posts#upvote'
   put 'posts/:id/downvote', to: 'posts#downvote'
 
+  post 'user/:user_id/category/:category_id/subscribe', to: 'category#subscribe', as: 'subscribe'
+
   scope '/c' do
     get ':category(/:filter)', to: 'home#index', as: 'category_filter'
   end

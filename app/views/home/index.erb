@@ -1,14 +1,23 @@
 <p id="notice"><%= notice %></p>
 
-<%= form_tag("#{@category}/#{@filter}", method: "get") do %>
+<% if @category != nil && user_signed_in? %>
+    <% if @category.is_subscribed current_user %>
+        <%= link_to 'Unsubscribe', subscribe_path(:user_id => current_user.id, :category_id => @category.id), method: :post%>
+    <% else %>
+        <%= link_to 'Subscribe', subscribe_path(:user_id => current_user.id, :category_id => @category.id), method: :post%>
+    <% end %>
+<% end %>
+
+
+<%= form_tag("#{@category.name}/#{@filter}", method: "get") do %>
   <%= label_tag(:search, "Search for:") %>
   <%= text_field_tag(:search) %>
   <%= submit_tag("Search") %>
 <% end %>
 
 <ul>
-  <li><%= link_to 'Hot', @category==nil ? filter_path(:filter => :hot) : category_filter_path(:filter => :hot)%></li>
-  <li><%= link_to 'New', @category==nil ? filter_path(:filter => :new) : category_filter_path(:filter => :new)%></li>
+  <li><%= link_to 'Hot', @category==nil ? filter_path(:filter => :hot) : category_filter_path(:category => @category.slug, :filter => :hot)%></li>
+  <li><%= link_to 'New', @category==nil ? filter_path(:filter => :new) : category_filter_path(:category => @category.slug, :filter => :new)%></li>
 </ul>
 
 <h1>Listing Posts</h1>
