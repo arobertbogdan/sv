@@ -1,31 +1,56 @@
-<p id="notice"><%= notice %></p>
-
-<% if @category != nil%>
-    <a <%= @category.is_subscribed(current_user) ? "" : "hidden" %> id="unsubscribe" category-id=<%= @category.id %> >Unsubscribe</a>
-    <a <%= @category.is_subscribed(current_user) ? "hidden" : "" %> id="subscribe" category-id=<%= @category.id %> >Subscribe</a>
+<% if !notice.nil? %>
+    <div class="alert alert-success col-md-9" role="alert">
+      <p id="notice"><%= notice %></p>
+    </div>
 <% end %>
 
+<div class="main-content">
+  <div class="posts col-md-9">
+    <ul class="list-unstyled">
+      <%= render @posts %>
+    </ul>
+    <nav class="text-center">
+      <%= will_paginate @posts, renderer: BootstrapPagination::Rails%>
+    </nav>
+  </div> <!-- end of posts -->
 
-<%= form_tag("#{@category.name}/#{@filter}", method: "get") do %>
-  <%= label_tag(:search, "Search for:") %>
-  <%= text_field_tag(:search) %>
-  <%= submit_tag("Search") %>
-<% end %>
-
-<ul>
-  <li><%= link_to 'Hot', @category==nil ? filter_path(:filter => :hot) : category_filter_path(:category => @category.slug, :filter => :hot)%></li>
-  <li><%= link_to 'New', @category==nil ? filter_path(:filter => :new) : category_filter_path(:category => @category.slug, :filter => :new)%></li>
-</ul>
-
-<h1>Listing Posts</h1>
-
-<table>
-
-  <tbody>
-  <%= render @posts %>
-  </tbody>
-</table>
-
-<div id="infinite-scrolling">
-  <%= will_paginate @posts%>
+  <div class="col-md-3"> <!-- sidebar -->
+    <aside>
+      <h4 class="text-center">THEInternet</h4>
+          <%= form_tag("#{@category.name}/#{@old_filter}", method: "get") do %>
+            <div class="form-group">
+                <%= label_tag(:search, "Search for:") %>
+              <%= text_field_tag :search, nil, class: 'form-control'%>
+            </div>
+          <% end %>
+      <% if !(user_signed_in?) %>
+          <%= form_for(:user, :url => session_path(:user)) do |f| %>
+              <div class="form-group">
+                <%= f.text_field :email, class: 'form-control' %>
+              </div>
+              <div class="form-group">
+                <%= f.password_field :password, class: 'form-control' %>
+              </div>
+              <div class="checkbox">
+                <label>
+                    <%= f.check_box :remember_me %> remember me
+                </label>
+              </div>
+              <%= f.submit 'Sign in', class: 'btn btn-default pull-right' %>
+              <%= link_to "reset password", new_password_path(:user) %>
+          <% end %>
+      <% end %>
+      <%= link_to 'Submit New Content',  new_post_path, class: 'btn btn-primary btn-block'  %>
+      <% if @category != nil%>
+          <a class="btn btn-primary btn-block" style="<%= @category.is_subscribed(current_user) ? "" : "display: none" %>" id="unsubscribe" category-id=<%= @category.id %> >Unsubscribe</a>
+          <a class="btn btn-primary btn-block" style="<%= @category.is_subscribed(current_user) ? "display: none" : "" %>" id="subscribe" category-id=<%= @category.id %> >Subscribe</a>
+      <% end %>
+    </aside>
+  </div> <!-- end of sidebar -->
 </div>
+
+<script>
+    setTimeout(function() {
+        $(".alert").slideUp();
+    }, 3000);
+</script>

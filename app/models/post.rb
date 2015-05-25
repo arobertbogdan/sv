@@ -1,11 +1,31 @@
 class Post < ActiveRecord::Base
+  validates :title, presence: true
+  validates :description, presence: true
+
   belongs_to :user
   belongs_to :category
   has_many :post_votes
   has_many :comments
 
-  def self.get_user_posts user
-    Post.where(:user_id => user)
+  def self.get_user_posts user, filter
+    posts = Post.where(:user_id => user)
+    if filter != nil
+      case filter
+        when "commented"
+          comments = Comment.where(:user_id => user).includes(:post)
+          posts = []
+          comments.each do |comment|
+            posts.push(comment.post)
+          end
+        when "voted"
+          votes = PostVote.where(:user_id => user).where.not(vote_type: 0).includes(:post)
+          posts = []
+          votes.each do |vote|
+            posts.push(vote.post)
+          end
+      end
+    end
+    posts.uniq
   end
 
   def self.karma user
@@ -14,8 +34,12 @@ class Post < ActiveRecord::Base
     sum
   end
 
-  def old
-    ApplicationHelper.time_diff created_at
+  def user_vote user
+    if user.nil?
+      return 0
+    end
+    vote = PostVote.find_by(:user_id => user.id, :post_id => id)
+    vote == nil ? 0 : vote.vote_type
   end
 
   def count_comments

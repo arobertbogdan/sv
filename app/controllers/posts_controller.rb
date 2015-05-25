@@ -27,6 +27,11 @@ class PostsController < ApplicationController
   # POST /posts.json
   def create
     @post = current_user.posts.build(post_params)
+    begin
+      object = ::LinkThumbnailer.generate('http://' + @post.media)
+      @post.thumbnail = object.images.first.src
+    rescue Net::HTTP::Persistent::Error
+    end
 
     respond_to do |format|
       if @post.save

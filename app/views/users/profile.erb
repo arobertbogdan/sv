@@ -1,44 +1,52 @@
-<p id="notice"><%= notice %></p>
-
-<p>Karma: <span><%= @karma %></span></p>
-
-<% if user_signed_in? && @user_id != current_user.id %>
-  <%= link_to 'Follow', follow_path(:id => @user_id), method: :post %>
+<% if !notice.nil? %>
+    <div class="alert alert-success col-md-9" role="alert">
+      <p id="notice"><%= notice %></p>
+    </div>
 <% end %>
 
-<h1>Listing Posts</h1>
-
-<table>
-  <tbody>
-  <% @posts.each do |post| %>
-      <tr>
-        <td>
-          <a class="up_vote" post-id=<%= post.id %>>+</a>
-          <%= post.rating %>
-          <a class="down_vote" post-id=<%= post.id %>>-</a>
-        </td>
-        <td><%= link_to post.title, post %></td>
-        <td><%= post.description %></td>
-        <td><%= post.media %></td>
-        <td>submited <span><%= post.old %></span> ago</td>
-        <td><%= link_to post.count_comments, post %></td>
-        <% if user_signed_in? && @user_id == current_user.id %>
-            <td><%= link_to 'Edit', edit_post_path(post) %></td>
-            <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <% end %>
-      </tr>
-  <% end %>
-  </tbody>
-</table>
-
-<div>
-  <h1>People you follow</h1>
-  <ul>
-    <% @followers.each do |follow| %>
-        <%= link_to follow.nickname, profile_path(:id => follow.follow_id) %>
-        <span><%= follow.count_new_posts current_user %></span>
-    <% end %>
-  </ul>
+<div class="main-content">
+  <div class="posts col-md-9">
+    <ul class="list-unstyled">
+      <%= render partial: "posts/post_user", collection: @posts %>
+    </ul>
+  </div> <!-- end of posts -->
 </div>
 
-<br>
+<div class="col-md-3"> <!-- sidebar -->
+  <aside>
+    <h4 class="text-center"><%= @user.nickname %></h4>
+    <div style="margin: auto; text-align: center">
+        <%= image_tag @user.avatar.url(:medium), class: 'avatar' %>
+    </div>
+    <%= form_for :user, url: avatar_path(@user.id), html: { method: :put, :multipart => true } do |form| %>
+        <div class="form-group">
+            <%= form.file_field :avatar, class: 'form-control' %>
+            <%= form.submit 'Submit', class: 'btn btn-default pull-right' %>
+        </div>
+    <% end %>
+
+    <% if user_signed_in? && @user.id != current_user.id %>
+        <% if current_user.is_following @user %>
+            <%= link_to 'Unfollow', unfollow_path(:id => @user.id), method: :post, class: 'btn btn-primary btn-block' %>
+        <% else %>
+            <%= link_to 'Follow', follow_path(:id => @user.id), method: :post, class: 'btn btn-primary btn-block' %>
+        <% end %>
+    <% end %>
+
+
+    <p class="text-center">Post karma: <span><%= @karma %></span></p>
+    <%= link_to 'Submit New Content',  new_post_path, class: 'btn btn-primary btn-block'  %>
+    <h4 class="text-center">SUBSCRIPTIONS</h4>
+    <ul class="list-unstyled">
+      <% @followers.each do |follow| %>
+          <li class="list-group-item">
+            <% if user_signed_in? %>
+                <span class="badge"><%= follow.count_new_posts @user %></span>
+            <% end %>
+            <%= image_tag follow.get_avatar %>
+            <%= link_to follow.nickname, profile_path(:id => follow.follow_id) %>
+          </li>
+      <% end %>
+    </ul>
+  </aside>
+</div> <!-- end of sidebar -->

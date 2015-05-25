@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   devise_scope :user do
     get 'user/:id', to: 'users#profile', as: 'profile'
+    get 'user/:id/:filter', to: 'users#profile', as: 'profile_filter'
     post 'user/:id/follow', to: 'users#follow', as: 'follow'
+    post 'user/:id/unfollow', to: 'users#unfollow', as: 'unfollow'
+    put 'user/:id/avatar', to: 'users#upload_avatar', as: 'avatar'
+    get '/' => "home#index", :as => :login
   end
 
   devise_for :users, :controllers => {:registrations => "users"}
@@ -12,6 +16,7 @@ Rails.application.routes.draw do
 
   put 'posts/:id/upvote', to: 'posts#upvote'
   put 'posts/:id/downvote', to: 'posts#downvote'
+
 
   post 'category/:category_id/subscribe', to: 'category#subscribe', as: 'subscribe'
   post 'category/:category_id/unsubscribe', to: 'category#unsubscribe', as: 'unsubscribe'

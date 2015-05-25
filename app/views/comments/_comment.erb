@@ -1,10 +1,20 @@
-<div class="comment" style="margin-left: 50px;">
-  <p>
-    <%= comment.body %>
-  </p>
-  <p>created by <strong><%= link_to comment.nickname, profile_path(:id => comment.reply_user_id) %></strong></p>
-  <p>submited <span><%= comment.old %></span> ago</p>
-  <a id="<%= comment.id %>" class="reply">Reply</a>
-
-  <%= render partial: "comments/comment", collection: comment.child.child_comments%>
-</div>
+<li>
+  <div class="media media-right">
+    <div class="media-body">
+      <div class="comm-info">
+        <span class="username"><%= link_to comment.nickname, profile_path(:id => comment.reply_user_id) %></span>
+        <p class="meta">
+          <span class="points">1 punct</span>
+          <span class="time"><%= time_ago_in_words comment.created_at %></span>
+        </p>
+      </div>
+      <p class="comm">
+        <%= comment.body %>
+      </p>
+      <button id="<%= comment.id %>" type="button" class="reply">reply</button>
+    </div> <!-- end of media-body -->
+    <ul class="list-unstyled">
+        <%= render partial: "comments/comment", collection: comment.child.child_comments %>
+    </ul>
+  </div> <!-- end of media -->
+</li>

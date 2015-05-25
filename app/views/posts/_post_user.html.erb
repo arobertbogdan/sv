@@ -1,0 +1,28 @@
+<li>
+  <article class="row clearfix">
+    <div class="vote pull-left">
+      <span <%= post_user.user_vote(@user) == 1 ? "vote_type = 1": "" %> class="glyphicon glyphicon-arrow-up vote-up" post-id=<%= post_user.id %>></span>
+      <span class="vote-number"><%= post_user.rating %></span>
+      <span <%= post_user.user_vote(@user) == -1 ? "vote_type = -1" : "" %> class="glyphicon glyphicon-arrow-down vote-down" post-id=<%= post_user.id %>></span>
+    </div>
+    <div class="col-md-1 article-img">
+      <img src="<%= post_user.thumbnail %>" alt="post_user image">
+    </div>
+    <div class="article-info col-md-9">
+      <h5 class="title"><%= link_to post_user.title, post_user %></h5>
+      <a href="#" class="website-link"><%= post_user.media %></a>
+      <p><%= post_user.description[0..100] %> <%= link_to '[...]', post_user %></p>
+      <p class="meta">submitted <span><%= time_ago_in_words post_user.created_at %></span> by <span><%= post_user.user.nickname %></span></p>
+      <div class="actions">
+        <%= link_to post_user.count_comments, post_user %>
+        <a href="#" class="action-share">share</a>
+      </div>
+    </div>
+    <% if user_signed_in? && @user.id == current_user.id %>
+        <div class="vote pull-right">
+          <span class="glyphicon glyphicon glyphicon-remove-circle post-action" post-id=<%= post_user.id %>></span>
+          <span class="glyphicon glyphicon glyphicon-pencil post-action" post-id=<%= post_user.id %>></span>
+        </div>
+    <% end %>
+  </article>
+</li>

@@ -5,28 +5,67 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+
 </head>
 <body>
-    <ul>
-        <% @categories.each do |category| %>
-            <li><%= link_to category.name, category_filter_path(:category => category.slug) %></li>
-        <% end %>
-    </ul>
-    <h1><%= link_to 'Home',  root_path  %></h1>
-    <% if user_signed_in? %>
-        <ul>
-            <li><%= link_to 'New Post',  new_post_path  %></li>
-            <li><%= link_to 'Profile',  profile_path(current_user.id)  %></li>
-            <li><%= link_to 'Sign Out',  destroy_user_session_path, :method => :delete %></li>
-        </ul>
-    <% else %>
-        <ul>
-            <li><%= link_to 'Sign In',  new_user_session_path  %></li>
-            <li><%= link_to 'Sign Up',  new_user_registration_path  %></li>
-        </ul>
-    <% end %>
+    <div class="container-fluid">
+      <header class="row">
+        <nav class="categories clearfix">
+          <div class="dropdown pull-left">
+            <a href="#" class="dropdown-toggle" id="subreddits" data-toggle="dropdown" aria-expanded="true">
+              My Subreddits
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="subreddits">
+              <li role="presentation">
+                <a role="menuitem" tabindex="-1" href="#">Action</a>
+              </li>
+              <li role="presentation">
+                <a role="menuitem" tabindex="-1" href="#">Art</a>
+              </li>
+              <li role="presentation">
+                <a role="menuitem" tabindex="-1" href="#">Books</a>
+              </li>
+              <li role="presentation">
+                <a role="menuitem" tabindex="-1" href="#">Creepy</a>
+              </li>
+            </ul>
+          </div>
+          <ul class="list-inline">
+            <% @categories.each do |category| %>
+                <li><%= link_to category.name, category_filter_path(:category => category.slug) %></li>
+            <% end %>
+          </ul>
+        </nav> <!-- end of categories -->
 
-<%= yield %>
-
+        <h1 class="text-center headline">THEInternet</h1>
+        <nav class="secondary-navigation clearfix">
+          <a href="<%= root_url %>" class="to-reddit pull-left">reddit</a>
+          <ul class="list-inline filters">
+            <% if @filters.keys[0] == :general %>
+                <% @filters.values[0].each do |fil, sel| %>
+                    <li class="<%= sel ? "selected" : "" %>"><%= link_to fil, @category==nil ? filter_path(:filter => fil) : category_filter_path(:category => @category.slug, :filter => fil)%></li>
+                <% end %>
+            <% else %>
+                <% @filters.values[0].each do |fil, sel| %>
+                    <li class="<%= sel ? "selected" : "" %>"><%= link_to fil, profile_filter_path(@user.id, :filter => fil)%></li>
+                <% end %>
+            <% end %>
+          </ul>
+          <% if user_signed_in? %>
+              <div class="logout">
+                <%= link_to 'Profile',  profile_path(current_user.id)  %>
+                <%= link_to 'Sign Out',  destroy_user_session_path, :method => :delete %> <span class="glyphicon glyphicon-log-out"></span>
+              </div>
+          <% else %>
+            <div class="sign-in">
+                <p>want to join? <a href="#" data-toggle="modal" data-target="#register">sign in or create an account</a> in seconds | </p>
+                <a href="#" data-toggle="modal" data-target="#select-lang"><span class="glyphicon glyphicon-wrench"></span></a>
+            </div>
+          <% end %>
+        </nav>
+      </header>
+      <%= yield %>
+    </div>
 </body>
 </html>

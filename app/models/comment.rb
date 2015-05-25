@@ -1,4 +1,6 @@
 class Comment < ActiveRecord::Base
+  validates :body, presence: true
+
   has_many :child, class_name: "Comment",
             foreign_key: "comment_id"
 

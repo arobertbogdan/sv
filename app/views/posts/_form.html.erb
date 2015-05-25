@@ -1,33 +1,11 @@
-<%= form_for(@post) do |f| %>
-  <% if @post.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
-
-      <ul>
-      <% @post.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :title %><br>
-    <%= f.text_field :title %>
+<div class="main-content">
+  <div class="new-post col-md-6">
+    <%= bootstrap_form_for (@post) do |f| %>
+        <%= f.text_field :title%>
+        <%= f.text_area :description%>
+        <%= f.text_field :media%>
+        <%= f.collection_select :category_id, @categories[1..@categories.count], :id, :name, {:include_blank => false}, {:class => 'form-control'} %>
+        <%= f.submit 'Submit', class: 'btn btn-primary btn-lg pull-right' %>
+    <% end %>
   </div>
-  <div class="field">
-    <%= f.label :description %><br>
-    <%= f.text_area :description %>
-  </div>
-  <div class="field">
-    <%= f.label :media %><br>
-    <%= f.text_field :media %>
-  </div>
-  <div class="field">
-    <%= f.label :category %><br>
-    <%= f.collection_select :category_id, @category[1..@category.count], :id, :name, include_blank: false %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>

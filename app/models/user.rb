@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
   validates :nickname, presence: true
+  has_attached_file :avatar, :styles => { :medium => "150x150>", :thumb => "20x20>" }, :default_url => "/images/:style/missing.png"
+  validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -11,4 +13,8 @@ class User < ActiveRecord::Base
   has_many :comments
   has_many :follows
   has_many :subscribes
+
+  def is_following user
+    Follow.where(:user_id => id, :follow_id => user.id).any?
+  end
 end

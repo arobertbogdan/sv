@@ -17,6 +17,12 @@ gem 'devise'
 
 gem 'friendly_id'
 gem 'will_paginate'
+gem 'will_paginate-bootstrap'
+
+gem 'link_thumbnailer'
+gem 'paperclip', '~> 4.2.1'
+gem 'bootstrap_form'
+
 
 group :development, :test do
   gem 'sqlite3'

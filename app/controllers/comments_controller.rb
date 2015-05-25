@@ -17,8 +17,6 @@ class CommentsController < ApplicationController
     respond_to do |format|
       if @comment.save
         format.html { redirect_to  post_path(post.id), notice: 'Comment was successfully updated.' }
-      else
-        format.html { render :edit }
       end
     end
   end
@@ -29,15 +27,14 @@ class CommentsController < ApplicationController
     @comment = current_user.comments.build(comment_params)
     post = Post.find(params[:post_id])
     @comment.post = post
-    parent = Comment.find(params[:parent_id])
-    @comment.parent = parent
+    if params[:parent_id].!= nil
+      parent = Comment.find(params[:parent_id])
+      @comment.parent = parent
+    end
 
     respond_to do |format|
       if @comment.save
         format.html { redirect_to  post_path(post.id), notice: 'Comment was successfully updated.' }
-      else
-        format.html { render :edit }
-      end
     end
   end
 

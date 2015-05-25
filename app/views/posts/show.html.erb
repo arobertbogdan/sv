@@ -1,31 +1,70 @@
-<p id="notice"><%= notice %></p>
+<% if !notice.nil? %>
+    <div class="alert alert-success col-md-9" role="alert">
+      <p id="notice"><%= notice %></p>
+    </div>
+<% end %>
 
-<p>
-  <strong>Title:</strong>
-  <%= @post.title %>
-</p>
+<div class="posts col-md-9">
+  <ul class="list-unstyled">
+    <li>
+      <article class="row clearfix">
+        <div class="vote pull-left">
+          <span class="glyphicon glyphicon-arrow-up vote-up" post-id=<%= @post.id %>></span>
+          <span class="vote-number"><%= @post.rating %></span>
+          <span class="glyphicon glyphicon-arrow-down vote-down" post-id=<%= @post.id %>></span>
+        </div>
+        <div class="col-md-1 article-img">
+          <img src="<%= @post.thumbnail %>" alt="post image">
+        </div>
+        <div class="article-info col-md-9">
+          <h5 class="title"><%= link_to @post.title, @post %></h5>
+          <a href="#" class="website-link"><%= @post.media %></a>
+          <p><%= @post.description %></p>
+          <p class="meta">submitted <span><%= time_ago_in_words @post.created_at %></span> by <span><%= @post.user.nickname %></span></p>
+          <div class="actions">
+            <%= link_to @post.count_comments, @post %>
+            <a href="#" class="action-share">share</a>
+          </div>
+        </div>
+      </article>
+    </li>
+  </ul>
+  <%= render partial: "comments/form"%>
+  <ul class="list-unstyled comments row">
+    <%= render partial: "comments/comment", collection: @comments %>
+  </ul>
+</div>
 
-<p>
-  <strong>Description:</strong>
-  <%= @post.description %>
-</p>
-
-<p>
-  <strong>Media:</strong>
-  <a><%= @post.media %></a>
-</p>
-
-<td><%= link_to @post.count_comments, @post %></td>
-
-<%= render partial: "comments/form"%>
-<%= render partial: "comments/comment", collection: @comments %>
-
-<script>
-    $(document).ready(function(){
-        $('.reply').click(function (event) {
-            var parent = $(event.target).parent();
-            parent.append("<%= escape_javascript(render partial: "comments/reply") %>");
-            parent.find("div.field").append('<input type="hidden" id="parent" name="parent_id" value="'+ this.id +'">');
-        });
-    });
-</script>
+<div class="col-md-3"> <!-- sidebar -->
+  <aside>
+    <h4 class="text-center">THEInternet</h4>
+    <%= form_tag(root_path, method: "get") do %>
+        <div class="form-group">
+          <%= label_tag(:search, "Search for:") %>
+          <%= text_field_tag :search, nil, class: 'form-control'%>
+        </div>
+    <% end %>
+    <% if !(user_signed_in?) %>
+        <%= form_for(:user, :url => session_path(:user)) do |f| %>
+            <div class="form-group">
+              <%= f.text_field :email, class: 'form-control' %>
+            </div>
+            <div class="form-group">
+              <%= f.password_field :password, class: 'form-control' %>
+            </div>
+            <div class="checkbox">
+              <label>
+                <%= f.check_box :remember_me %> remember me
+              </label>
+            </div>
+            <%= f.submit 'Sign in', class: 'btn btn-default pull-right' %>
+            <%= link_to "reset password", new_password_path(:user) %>
+        <% end %>
+    <% end %>
+    <%= link_to 'Submit New Content',  new_post_path, class: 'btn btn-primary btn-block'  %>
+    <% if @category != nil%>
+        <a class="btn btn-primary btn-block" style="<%= @category.is_subscribed(current_user) ? "" : "display: none" %>" id="unsubscribe" category-id=<%= @category.id %> >Unsubscribe</a>
+        <a class="btn btn-primary btn-block" style="<%= @category.is_subscribed(current_user) ? "display: none" : "" %>" id="subscribe" category-id=<%= @category.id %> >Subscribe</a>
+    <% end %>
+  </aside>
+</div> <!-- end of sidebar -->

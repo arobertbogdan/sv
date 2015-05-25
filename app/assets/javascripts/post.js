@@ -3,7 +3,21 @@
  */
 var ready;
 ready = function() {
-    $(".up_vote").on('click', function(){
+    setTimeout(function() {
+        $(".alert").slideUp();
+    }, 3000);
+
+    var spans = $(".vote").find("span");
+    spans.each(function(){
+        if($(this).attr('vote_type') == "1"){
+            $(this).css("color","green");
+        }
+        if($(this).attr('vote_type') == "-1"){
+            $(this).css("color","red");
+        }
+    });
+
+    $(".vote-up").on('click', function(){
         $.ajax({
             url: '/posts/' + this.getAttribute("post-id") + '/upvote',
             type: 'PUT'
@@ -11,7 +25,7 @@ ready = function() {
             console.log(data)
         });
     });
-    $(".down_vote").on('click', function(){
+    $(".vote-down").on('click', function(){
         $.ajax({
             url: '/posts/' + this.getAttribute("post-id") + '/downvote',
             type: 'PUT'

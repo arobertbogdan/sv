@@ -21,6 +21,12 @@ categories = Category.all
 
 categories.each{ |category|
   20.times{
-    Post.create(title: "Post"+rand(200).to_s+category.name, description:"test", category_id: category.id, media: "test.com", user_id: user.id, rating: rand(4000) )
+    p = Post.create(title: "Post"+rand(200).to_s+category.name, description:"test", category_id: category.id, media: "www.youtube.com", user_id: user.id, rating: rand(4000) )
+    begin
+      object = ::LinkThumbnailer.generate('http://' + p.media)
+      p.thumbnail = object.images.first.src
+      p.save
+    rescue Net::HTTP::Persistent::Error
+    end
   }
 }
