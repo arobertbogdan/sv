@@ -35,6 +35,7 @@ class CommentsController < ApplicationController
     respond_to do |format|
       if @comment.save
         format.html { redirect_to  post_path(post.id), notice: 'Comment was successfully updated.' }
+      end
     end
   end
 
