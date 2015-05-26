@@ -1,10 +1,13 @@
 Rails.application.routes.draw do
   devise_scope :user do
     get 'user/:id', to: 'users#profile', as: 'profile'
+    get 'user/:id/edit', to: 'users#edit', as: 'edit_profile'
     get 'user/:id/:filter', to: 'users#profile', as: 'profile_filter'
     post 'user/:id/follow', to: 'users#follow', as: 'follow'
     post 'user/:id/unfollow', to: 'users#unfollow', as: 'unfollow'
     put 'user/:id/avatar', to: 'users#upload_avatar', as: 'avatar'
+    put 'user/:id', to: 'users#update', as: 'update_profile'
+    post 'users', to: 'users#create', as: 'register_user'
     get '/' => "home#index", :as => :login
   end
 

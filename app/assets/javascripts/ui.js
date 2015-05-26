@@ -1,5 +1,4 @@
 $(document).ready(function() {
-	
 	// reply comment
 	if($('#comment-form')) {
 		var form = $('#comment-form');

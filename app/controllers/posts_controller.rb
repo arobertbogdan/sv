@@ -11,7 +11,15 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.json
   def show
+    @comment = current_user.comments.build
     @comments = Comment.get_post_comments @post
+    if session[:comment_errors]
+      session[:comment_errors].each {|error, error_message| @comment.errors.add error, error_message}
+      session.delete :comment_errors
+    end
+    respond_to do |format|
+      format.html
+    end
   end
 
   # GET /posts/new

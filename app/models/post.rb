@@ -15,13 +15,17 @@ class Post < ActiveRecord::Base
           comments = Comment.where(:user_id => user).includes(:post)
           posts = []
           comments.each do |comment|
-            posts.push(comment.post)
+            if !comment.post.nil?
+              posts.push(comment.post)
+            end
           end
         when "voted"
           votes = PostVote.where(:user_id => user).where.not(vote_type: 0).includes(:post)
           posts = []
           votes.each do |vote|
-            posts.push(vote.post)
+            if !vote.post.nil?
+              posts.push(vote.post)
+            end
           end
       end
     end
@@ -47,12 +51,12 @@ class Post < ActiveRecord::Base
   end
 
   def up_vote user
-    @vote = PostVote.find_by(user_id: user.id, post_id: self.id)
+    @vote = PostVote.find_by(user_id: user.id, post_id: id)
     apply_vote 1, user
   end
 
   def down_vote user
-    @vote = PostVote.find_by(user_id: user.id, post_id: self.id)
+    @vote = PostVote.find_by(user_id: user.id, post_id: id)
     apply_vote -1, user
   end
 
@@ -82,8 +86,7 @@ class Post < ActiveRecord::Base
   private
     def apply_vote vote_type, user
       if @vote == nil
-        @vote = PostVote.create(user_id: user.id, post_id: id)
-        @vote.vote_type = vote_type
+        @vote = PostVote.create(user_id: user.id, post_id: id, vote_type: vote_type)
         self.rating += vote_type
       else
         if @vote.vote_type + vote_type == 0
@@ -91,9 +94,9 @@ class Post < ActiveRecord::Base
         else
           self.rating += @vote.vote_type == vote_type ? -vote_type : vote_type
         end
+        @vote.vote_type = @vote.vote_type == vote_type ? 0 : vote_type
       end
 
-      @vote.vote_type = @vote.vote_type == vote_type ? 0 : vote_type
       @vote.save
       self.save
     end

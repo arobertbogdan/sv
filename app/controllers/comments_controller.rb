@@ -7,20 +7,6 @@ class CommentsController < ApplicationController
     @comment = Comment.new
   end
 
-  # POST /comments
-  # POST /comments.json
-  def create
-    @comment = current_user.comments.build(comment_params)
-    post = Post.find(params[:post_id])
-    @comment.post = post
-
-    respond_to do |format|
-      if @comment.save
-        format.html { redirect_to  post_path(post.id), notice: 'Comment was successfully updated.' }
-      end
-    end
-  end
-
   # POST /comments/1/reply
 
   def reply
@@ -34,7 +20,12 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       if @comment.save
-        format.html { redirect_to  post_path(post.id), notice: 'Comment was successfully updated.' }
+        format.html { redirect_to  post_path(post.id), notice: 'Comment was successfully created.' }
+      else
+        if @comment.errors.any?
+          session[:comment_errors] = @comment.errors
+        end
+        format.html { redirect_to  post_path(post.id) }
       end
     end
   end

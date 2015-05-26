@@ -103,10 +103,10 @@ header {
 	height: 44px;
 	font-size: 0px;
 	color: transparent;
-	background: url('/assets/reddit.png');
+	background: url('/assets/logo1.png');
 	z-index: 1;
 }
-.to-reddit:hover { background: url('/assets/reddit-hover.png'); }
+.to-reddit:hover { background: url('/assets/logo2.png'); }
 
 .filters {
 	position: absolute;

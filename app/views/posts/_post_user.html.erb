@@ -6,7 +6,7 @@
       <span <%= post_user.user_vote(@user) == -1 ? "vote_type = -1" : "" %> class="glyphicon glyphicon-arrow-down vote-down" post-id=<%= post_user.id %>></span>
     </div>
     <div class="col-md-1 article-img">
-      <img src="<%= post_user.thumbnail %>" alt="post_user image">
+      <img src="<%= post_user.thumbnail %>" alt="post image">
     </div>
     <div class="article-info col-md-9">
       <h5 class="title"><%= link_to post_user.title, post_user %></h5>
@@ -18,10 +18,10 @@
         <a href="#" class="action-share">share</a>
       </div>
     </div>
-    <% if user_signed_in? && @user.id == current_user.id %>
+    <% if user_signed_in? && @user.id == current_user.id && @filters.values[0].values[0] %>
         <div class="vote pull-right">
-          <span class="glyphicon glyphicon glyphicon-remove-circle post-action" post-id=<%= post_user.id %>></span>
-          <span class="glyphicon glyphicon glyphicon-pencil post-action" post-id=<%= post_user.id %>></span>
+          <%= link_to "", post_path(post_user), method: :delete ,class: 'glyphicon glyphicon glyphicon-remove-circle post-action' %>
+          <%= link_to "", edit_post_path(post_user), class: 'glyphicon glyphicon glyphicon-pencil post-action' %>
         </div>
     <% end %>
   </article>

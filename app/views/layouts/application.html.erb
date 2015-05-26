@@ -13,22 +13,13 @@
         <nav class="categories clearfix">
           <div class="dropdown pull-left">
             <a href="#" class="dropdown-toggle" id="subreddits" data-toggle="dropdown" aria-expanded="true">
-              My Subreddits
+              My Internet
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="subreddits">
-              <li role="presentation">
-                <a role="menuitem" tabindex="-1" href="#">Action</a>
-              </li>
-              <li role="presentation">
-                <a role="menuitem" tabindex="-1" href="#">Art</a>
-              </li>
-              <li role="presentation">
-                <a role="menuitem" tabindex="-1" href="#">Books</a>
-              </li>
-              <li role="presentation">
-                <a role="menuitem" tabindex="-1" href="#">Creepy</a>
-              </li>
+              <% @categories.each do |category| %>
+                  <li><%= link_to category.name, category_filter_path(:category => category.slug) %></li>
+              <% end %>
             </ul>
           </div>
           <ul class="list-inline">
@@ -42,20 +33,23 @@
         <nav class="secondary-navigation clearfix">
           <a href="<%= root_url %>" class="to-reddit pull-left">reddit</a>
           <ul class="list-inline filters">
-            <% if @filters.keys[0] == :general %>
-                <% @filters.values[0].each do |fil, sel| %>
-                    <li class="<%= sel ? "selected" : "" %>"><%= link_to fil, @category==nil ? filter_path(:filter => fil) : category_filter_path(:category => @category.slug, :filter => fil)%></li>
-                <% end %>
-            <% else %>
-                <% @filters.values[0].each do |fil, sel| %>
-                    <li class="<%= sel ? "selected" : "" %>"><%= link_to fil, profile_filter_path(@user.id, :filter => fil)%></li>
+            <% if !@filters.nil? %>
+                <% if @filters.keys[0] == :general %>
+                    <% @filters.values[0].each do |fil, sel| %>
+                        <li class="<%= sel ? "selected" : "" %>"><%= link_to fil, @category==nil ? filter_path(:filter => fil) : category_filter_path(:category => @category.slug, :filter => fil)%></li>
+                    <% end %>
+                <% else %>
+                    <% @filters.values[0].each do |fil, sel| %>
+                        <li class="<%= sel ? "selected" : "" %>"><%= link_to fil, profile_filter_path(@user.id, :filter => fil)%></li>
+                    <% end %>
                 <% end %>
             <% end %>
           </ul>
           <% if user_signed_in? %>
               <div class="logout">
                 <%= link_to 'Profile',  profile_path(current_user.id)  %>
-                <%= link_to 'Sign Out',  destroy_user_session_path, :method => :delete %> <span class="glyphicon glyphicon-log-out"></span>
+                <%= link_to '',  edit_profile_path(current_user.id), class: 'glyphicon glyphicon glyphicon-cog'  %>
+                <%= link_to '',  destroy_user_session_path, :method => :delete, class: 'glyphicon glyphicon-log-out' %>
               </div>
           <% else %>
             <div class="sign-in">
@@ -65,7 +59,67 @@
           <% end %>
         </nav>
       </header>
+      <% if !notice.nil? %>
+          <div class="alert alert-success col-md-9" role="alert">
+            <p><%= notice %></p>
+          </div>
+      <% end %>
       <%= yield %>
     </div>
+
+    <% if !user_signed_in? %>
+        <!-- register modal -->
+        <div class="modal fade register-modal" id="register" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-md-6 register-form">
+                    <h5>Create a new account</h5>
+                    <%= bootstrap_form_for @user, url: register_user_path(@user), :validate => true, method: :post do |f| %>
+                          <%= f.text_field :nickname, autofocus: true %>
+                          <%= f.email_field :email%>
+                          <% if @validatable %>
+                              <em>(<%= @minimum_password_length %> characters minimum)</em>
+                          <% end %><br />
+                          <%= f.password_field :password, autocomplete: "off" %>
+                          <%= f.password_field :password_confirmation, autocomplete: "off" %>
+                          <%= f.submit "Sign up" %>
+                    <% end %>
+                  </div>
+                  <div class="col-md-6 login-form">
+                    <h5>Sign In</h5>
+                    <%= bootstrap_form_for(:user, :url => session_path(:user)) do |f| %>
+                        <%= f.text_field :email%>
+                        <%= f.password_field :password%>
+                        <%= f.check_box :remember_me %>
+                        <%= f.submit 'Sign in', class: 'btn btn-default pull-right' %>
+                        <%= link_to "reset password", new_password_path(:user) %>
+                    <% end %>
+                  </div>
+                </div> <!-- end of row -->
+                <div class="row agreement">
+                  <div class="col-md-12">
+                    <p>
+                      We care about your privacy, and we never spam. By creating an account, you agree to reddit's <a href="#">User Agreement</a> and <a href="#">Privacy Policy</a>. We're proud of them, and you should read them.
+                    </p>
+                  </div>
+                </div>
+              </div> <!-- end of modal-body -->
+            </div><!-- end of modal-content -->
+          </div><!-- end of modal-dialog -->
+        </div><!-- end of register modal -->
+    <% end %>
 </body>
 </html>
+
+<script>
+  $(document).ready(function(){
+      $('#register').modal({
+          show: '<%= @has_errors %>'
+      });
+  });
+</script>
