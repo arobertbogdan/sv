@@ -30,14 +30,14 @@
       </div>
 
       <%= link_to 'Submit New Content',  new_post_path, class: 'btn btn-primary btn-block'  %>
-      <h4 class="profile-usertitle-job">SUBSCRIPTIONS</h4>
+      <h4 class="profile-usertitle-job">FOLLOWING</h4>
       <ul class="list-unstyled">
         <% @followers.each do |follow| %>
             <li class="list-group-item">
               <% if user_signed_in? %>
                   <span class="badge"><%= follow.count_new_posts @user %></span>
               <% end %>
-              <%= image_tag follow.get_avatar %>
+              <%= image_tag follow.get_avatar, class: 'follow-avatar' %>
               <%= link_to follow.nickname, profile_path(:id => follow.follow_id) %>
             </li>
         <% end %>
