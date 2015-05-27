@@ -111,3 +111,6 @@ body {
     background: #fff;
     min-height: 460px;
 }
+.btn-sm{
+    margin-top: 10px;
+}

@@ -3,6 +3,8 @@
  */
 var ready;
 ready = function() {
+    $(":file").filestyle({buttonName: "btn-primary"});
+
     setTimeout(function() {
         $(".alert").slideUp();
     }, 3000);

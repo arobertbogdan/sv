@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     get '/' => "home#index", :as => :login
   end
 
-  devise_for :users, :controllers => {:registrations => "users"}
+  devise_for :users, :controllers => {:registrations => "users", :passwords => "passwords"}
   resources :posts do
     resource :comments
     post 'comments/reply', to: 'comments#reply', as: 'comment_reply'

@@ -1,6 +1,47 @@
-<h1>Editing Post</h1>
+<div class="new-post col-md-9">
+    <div class="main-content">
+        <h1 class="page-title">Editing Post</h1>
+        <%= render 'form' %>
+    </div>
+</div>
+<div class="col-md-3"> <!-- sidebar -->
+  <div class="profile-sidebar">
+    <div class="profile-userpic">
+      <a data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        <%= image_tag @user.avatar.url(:medium), class: 'img-responsive' %>
+      </a>
+    </div>
+    <div class="profile-usertitle">
+      <div class="profile-usertitle-name">
+        <%= @user.nickname %>
+      </div>
+      <div class="profile-usertitle-job">
+        Karma: <%= @karma %>
+      </div>
+    </div>
+    <aside>
+      <div class="collapse" id="collapseExample">
+        <div class="well">
+          <%= bootstrap_form_for :user, url: avatar_path(@user.id), html: { method: :put, :multipart => true } do |form| %>
+              <%= form.file_field :avatar%>
+              <%= form.submit 'Submit'%>
+          <% end %>
+        </div>
+      </div>
 
-<%= render 'form' %>
-
-<%= link_to 'Show', @post %> |
-<%= link_to 'Back', posts_path %>
+      <%= link_to 'Submit New Content',  new_post_path, class: 'btn btn-primary btn-block'  %>
+      <h4 class="profile-usertitle-job">SUBSCRIPTIONS</h4>
+      <ul class="list-unstyled">
+        <% @followers.each do |follow| %>
+            <li class="list-group-item">
+              <% if user_signed_in? %>
+                  <span class="badge"><%= follow.count_new_posts @user %></span>
+              <% end %>
+              <%= image_tag follow.get_avatar %>
+              <%= link_to follow.nickname, profile_path(:id => follow.follow_id) %>
+            </li>
+        <% end %>
+      </ul>
+    </aside>
+  </div>
+</div> <!-- end of sidebar -->

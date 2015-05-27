@@ -1,17 +1,10 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy, :upvote, :downvote]
   before_action :authenticate_user!, :except => [:show, :index]
-
-  # GET /posts
-  # GET /posts.json
-  def index
-    @posts = Post.get_user_posts current_user
-  end
-
   # GET /posts/1
   # GET /posts/1.json
   def show
-    @comment = current_user.comments.build
+    @comment = Comment.new
     @comments = Comment.get_post_comments @post
     if session[:comment_errors]
       session[:comment_errors].each {|error, error_message| @comment.errors.add error, error_message}
@@ -29,17 +22,30 @@ class PostsController < ApplicationController
 
   # GET /posts/1/edit
   def edit
+    @user = current_user
+    @followers = Follow.get_user_followings current_user.id
+    @karma = Post.karma current_user.id
+    @filters = {:profile => {:overview => false, :commented => false, :voted => false}}
+    @filters.values[0].each { |k, v|
+      if k.to_s == @filter.to_s
+        @filters.values[0][k] = true
+      end
+    }
   end
 
   # POST /posts
   # POST /posts.json
   def create
     @post = current_user.posts.build(post_params)
+    @post.save
+
+
     begin
-      object = ::LinkThumbnailer.generate('http://' + @post.media)
-      @post.thumbnail = object.images.first.src
+      object = ::LinkThumbnailer.generate(@post.media)
+      @post.thumbnail = !object.images.first.nil? ? object.images.first.src : "/assets/miss-thumb.png"
     rescue Net::HTTP::Persistent::Error
     end
+
 
     respond_to do |format|
       if @post.save

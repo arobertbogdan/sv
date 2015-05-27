@@ -3,18 +3,19 @@
     <li>
       <article class="row clearfix">
         <div class="vote pull-left">
-          <span class="glyphicon glyphicon-arrow-up vote-up" post-id=<%= @post.id %>></span>
+          <span <%= @post.user_vote(current_user) == 1 ? "vote_type = 1": "" %> class="glyphicon glyphicon-arrow-up vote-up" post-id=<%= @post.id %>></span>
           <span class="vote-number"><%= @post.rating %></span>
-          <span class="glyphicon glyphicon-arrow-down vote-down" post-id=<%= @post.id %>></span>
+          <span <%= @post.user_vote(current_user) == -1 ? "vote_type = -1" : "" %> class="glyphicon glyphicon-arrow-down vote-down" post-id=<%= @post.id %>></span>
         </div>
         <div class="col-md-1 article-img">
           <img src="<%= @post.thumbnail %>" alt="post image">
         </div>
         <div class="article-info col-md-9">
           <h5 class="title"><%= link_to @post.title, @post %></h5>
-          <a href="#" class="website-link"><%= @post.media %></a>
+          <a href="<%= @post.media %>" target="_blank" class="website-link"><%= @post.media %></a>
           <p><%= @post.description %></p>
-          <p class="meta">submitted <span><%= time_ago_in_words @post.created_at %></span> by <span><%= @post.user.nickname %></span></p>
+          <img style="<% @post.remote_file_exists?(@post.media) ? "height: 533px; width: 800px;" : "" %>" src="<% if @post.remote_file_exists?(@post.media)%><%= @post.media %><% end %>">
+          <p class="meta">submitted <span><%= time_ago_in_words @post.created_at %></span> by <span><%= link_to @post.user.nickname, profile_path(:id => @post.user.id) %></span></p>
           <div class="actions">
             <%= link_to @post.count_comments, @post %>
             <a href="#" class="action-share">share</a>
@@ -24,22 +25,23 @@
     </li>
   </ul>
   <%= render partial: "comments/form"%>
-  <ul class="list-unstyled comments row">
-    <%= render partial: "comments/comment", collection: @comments %>
-  </ul>
+  <% if @comments.to_a.count > 0 %>
+      <ul class="list-unstyled comments row">
+        <%= render partial: "comments/comment", collection: @comments %>
+      </ul>
+  <% end %>
 </div>
 
 <div class="col-md-3"> <!-- sidebar -->
   <aside>
-    <h4 class="text-center">THEInternet</h4>
-    <%= form_tag(root_path, method: "get") do %>
+    <h4 class="text-center">THEinternet</h4>
+    <%= form_tag root_path, method: "get", :class => "search-form" do %>
         <div class="form-group">
-          <%= label_tag(:search, "Search for:") %>
-          <%= text_field_tag :search, nil, class: 'form-control'%>
+          <%= text_field_tag :search, nil, class: 'form-control', placeholder: 'search' %>
         </div>
     <% end %>
     <% if !(user_signed_in?) %>
-        <%= form_for(:user, :url => session_path(:user)) do |f| %>
+        <%= form_for :user, :url => session_path(:user), :html => {:class => "login-form"} do |f| %>
             <div class="form-group">
               <%= f.text_field :email, class: 'form-control' %>
             </div>

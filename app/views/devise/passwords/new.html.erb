@@ -1,16 +1,30 @@
-<h2>Forgot your password?</h2>
+<div class="main-content">
+  <div class="new-post col-md-9">
+    <h2>Forgot your password?</h2>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= devise_error_messages! %>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
+    <%= bootstrap_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+        <%= devise_error_messages! %>
+        <%= f.email_field :email, autofocus: true %>
+        <%= f.submit "Send me reset password instructions" %>
+    <% end %>
   </div>
+</div>
 
-  <div class="actions">
-    <%= f.submit "Send me reset password instructions" %>
-  </div>
-<% end %>
+<div class="col-md-3"> <!-- sidebar -->
+  <aside>
+    <h4 class="text-center">THEinternet</h4>
+    <%= form_tag root_path, method: "get", :class => "search-form" do %>
+        <div class="form-group">
+          <%= text_field_tag :search, nil, class: 'form-control', placeholder: 'search' %>
+        </div>
+    <% end %>
+    <%= bootstrap_form_for :user, :url => session_path(:user), :html => {:class => "login-form"} do |f| %>
+        <%= f.text_field :email%>
+        <%= f.password_field :password%>
+        <%= f.check_box :remember_me %>
+        <%= f.submit 'Sign in', class: 'btn btn-default pull-right' %>
+        <%= link_to "reset password", new_password_path(:user) %>
+    <% end %>
+  </aside>
+</div> <!-- end of sidebar -->
 
-<%= render "devise/shared/links" %>

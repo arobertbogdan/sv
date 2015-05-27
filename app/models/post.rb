@@ -1,6 +1,10 @@
 class Post < ActiveRecord::Base
   validates :title, presence: true
   validates :description, presence: true
+  validates_format_of :media, :with => /\A(http|https)?:?\/?\/?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?\Z/ix
+
+
+  before_save :process_media
 
   belongs_to :user
   belongs_to :category
@@ -8,7 +12,7 @@ class Post < ActiveRecord::Base
   has_many :comments
 
   def self.get_user_posts user, filter
-    posts = Post.where(:user_id => user)
+    posts = Post.where(:user_id => user).order(created_at: :desc)
     if filter != nil
       case filter
         when "commented"
@@ -19,6 +23,7 @@ class Post < ActiveRecord::Base
               posts.push(comment.post)
             end
           end
+          posts = posts.sort_by{|a| a[:created_at]}.reverse
         when "voted"
           votes = PostVote.where(:user_id => user).where.not(vote_type: 0).includes(:post)
           posts = []
@@ -27,6 +32,7 @@ class Post < ActiveRecord::Base
               posts.push(vote.post)
             end
           end
+          posts = posts.sort_by{|a| a[:created_at]}.reverse
       end
     end
     posts.uniq
@@ -36,6 +42,10 @@ class Post < ActiveRecord::Base
     sum = 0
     Post.where(user_id: user).each{ |post| sum += post["rating"]}
     sum
+  end
+
+  def remote_file_exists?(url)
+    return /([^\s]+(\.(?i)(jpg|png|gif|bmp))$)/.match(url)
   end
 
   def user_vote user
@@ -84,6 +94,13 @@ class Post < ActiveRecord::Base
   end
 
   private
+
+  def process_media
+    if (self.media.include? "http://") == false && (self.media.include? "https://") == false
+      self.media = "http://" + self.media
+    end
+  end
+
     def apply_vote vote_type, user
       if @vote == nil
         @vote = PostVote.create(user_id: user.id, post_id: id, vote_type: vote_type)

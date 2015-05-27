@@ -10,17 +10,21 @@
 
   <div class="col-md-3"> <!-- sidebar -->
     <aside>
-      <h4 class="text-center">THEInternet</h4>
-          <%= form_tag("/c/#{@category.name}/#{@old_filter}", method: "get") do %>
+      <h4 class="text-center">THEinternet</h4>
+          <%= form_tag "/c/#{@category.name}/#{@old_filter}", method: "get", :class => "search-form" do %>
             <div class="form-group">
-                <%= label_tag(:search, "Search for:") %>
-              <%= text_field_tag :search, nil, class: 'form-control'%>
+              <%= text_field_tag :search, nil, class: 'form-control', placeholder: 'search' %>
             </div>
           <% end %>
       <% if !(user_signed_in?) %>
-          <%= bootstrap_form_for(:user, :url => session_path(:user)) do |f| %>
-              <%= f.text_field :email%>
-              <%= f.password_field :password%>
+          <% if flash[:alert] %>
+              <div class="alert alert-danger" role="alert">
+                <p><%= flash[:alert] %></p>
+              </div>
+          <% end %>
+          <%= bootstrap_form_for :user, :url => session_path(:user), :html => {:class => "login-form"} do |f| %>
+              <%= f.text_field :email, hide_label: true, placeholder: "email"%>
+              <%= f.password_field :password, hide_label: true, placeholder: "password"%>
               <%= f.check_box :remember_me %>
               <%= f.submit 'Sign in', class: 'btn btn-default pull-right' %>
               <%= link_to "reset password", new_password_path(:user) %>
@@ -28,8 +32,10 @@
       <% end %>
       <%= link_to 'Submit New Content',  new_post_path, class: 'btn btn-primary btn-block'  %>
       <% if @category != nil%>
-          <a class="btn btn-primary btn-block" style="<%= @category.is_subscribed(current_user) ? "" : "display: none" %>" id="unsubscribe" category-id=<%= @category.id %> >Unsubscribe</a>
-          <a class="btn btn-primary btn-block" style="<%= @category.is_subscribed(current_user) ? "display: none" : "" %>" id="subscribe" category-id=<%= @category.id %> >Subscribe</a>
+          <a class="btn btn-default btn-sm" style="<%= @category.is_subscribed(current_user) ? "" : "display: none" %>" id="unsubscribe" category-id=<%= @category.id %> >Unsubscribe</a>
+          <a class="btn btn-primary btn-sm" style="<%= @category.is_subscribed(current_user) ? "display: none" : "" %>" id="subscribe" category-id=<%= @category.id %> >Subscribe</a>
+          <span><%= @category.get_readers %> readers</span>
+          <span><%= @category.get_readers %> readers</span>
       <% end %>
     </aside>
   </div> <!-- end of sidebar -->

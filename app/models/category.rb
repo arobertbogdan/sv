@@ -12,6 +12,10 @@ class Category < ActiveRecord::Base
     Subscribe.where(:user_id => user.id, :category_id => self.id).any?
   end
 
+  def get_readers
+    Subscribe.where(:category_id => self.id).count
+  end
+
   def self.deliver_subscribe_mail subscribe
     SubscribeMailer.subscribe_on_category(subscribe.user, subscribe.category).deliver_now
   end

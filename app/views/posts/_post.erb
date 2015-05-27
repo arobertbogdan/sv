@@ -10,9 +10,9 @@
     </div>
     <div class="article-info col-md-9">
       <h5 class="title"><%= link_to post.title, post %></h5>
-      <a href="#" class="website-link"><%= post.media %></a>
+      <a href="<%= post.media %>" target="_blank" class="website-link"><%= post.media %></a>
       <p><%= post.description[0..100] %> <%= link_to '[...]', post %></p>
-      <p class="meta">submitted <span><%= time_ago_in_words post.created_at %></span> by <span><%= post.user.nickname %></span></p>
+      <p class="meta">submitted <span><%= time_ago_in_words post.created_at %></span> by <span><%= link_to post.user.nickname, profile_path(:id => post.user.id) %></span></p>
       <div class="actions">
         <%= link_to post.count_comments, post %>
         <a href="#" class="action-share">share</a>

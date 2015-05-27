@@ -67,7 +67,7 @@ class UsersController < Devise::RegistrationsController
     def upload_avatar
       @user = User.find(params[:id])
       respond_to do |format|
-        if @user.update(account_update_params)
+        if @user.update(avatar_update_params)
           format.html { redirect_to profile_path(params[:id].to_i), notice: 'Photo uploaded succesfully.' }
         end
       end
@@ -83,6 +83,9 @@ class UsersController < Devise::RegistrationsController
       params.require(:user).permit(:nickname, :email, :password, :password_confirmation)
     end
 
+    def avatar_update_params
+      params.require(:user).permit(:avatar)
+    end
     def side_bar_resources
       @filter = params[:filter] == nil ? "overview" : params[:filter]
       @user = User.find(params[:id])

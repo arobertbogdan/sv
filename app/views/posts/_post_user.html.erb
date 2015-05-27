@@ -10,9 +10,9 @@
     </div>
     <div class="article-info col-md-9">
       <h5 class="title"><%= link_to post_user.title, post_user %></h5>
-      <a href="#" class="website-link"><%= post_user.media %></a>
+      <a href="<%= post_user.media %>" target="_blank" class="website-link"><%= post_user.media %></a>
       <p><%= post_user.description[0..100] %> <%= link_to '[...]', post_user %></p>
-      <p class="meta">submitted <span><%= time_ago_in_words post_user.created_at %></span> by <span><%= post_user.user.nickname %></span></p>
+      <p class="meta">submitted <span><%= time_ago_in_words post_user.created_at %></span> by <span><%= link_to post_user.user.nickname, profile_path(:id => post_user.user.id) %></span></p>
       <div class="actions">
         <%= link_to post_user.count_comments, post_user %>
         <a href="#" class="action-share">share</a>
@@ -20,8 +20,8 @@
     </div>
     <% if user_signed_in? && @user.id == current_user.id && @filters.values[0].values[0] %>
         <div class="vote pull-right">
-          <%= link_to "", post_path(post_user), method: :delete ,class: 'glyphicon glyphicon glyphicon-remove-circle post-action' %>
-          <%= link_to "", edit_post_path(post_user), class: 'glyphicon glyphicon glyphicon-pencil post-action' %>
+          <%= link_to "", post_path(post_user), method: :delete ,class: 'glyphicon glyphicon glyphicon-remove-circle post-action icon' %>
+          <%= link_to "", edit_post_path(post_user), class: 'glyphicon glyphicon glyphicon-pencil post-action icon' %>
         </div>
     <% end %>
   </article>

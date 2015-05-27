@@ -34,8 +34,8 @@
     <div class="collapse" id="collapseExample">
       <div class="well">
         <%= bootstrap_form_for :user, url: avatar_path(@user.id), html: { method: :put, :multipart => true } do |form| %>
-              <%= form.file_field :avatar%>
-              <%= form.submit 'Submit'%>
+              <%= form.file_field :avatar %>
+              <%= form.submit 'Upload'%>
         <% end %>
       </div>
     </div>

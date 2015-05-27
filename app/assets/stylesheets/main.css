@@ -57,7 +57,6 @@ header {
 	margin-bottom: 25px; 
 	background: url('/assets/humor.jpg') no-repeat;
     background-size: cover;
-    color: rgba(196, 196, 196, 0.5);
 }
 
 .categories {
@@ -287,4 +286,17 @@ aside .checkbox a { margin-left: 20px; }
     -webkit-box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
     -moz-box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
     box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
+}
+
+.profile-button{
+    padding: 0 !important;
+    margin: 0 5px !important;
+}
+.icon:hover{
+    color: #040404;
+    text-decoration: inherit;
+}
+
+.page-title{
+    margin: 0px 0px 10px 0px !important;
 }

@@ -1,5 +1,5 @@
 <div class="main-content">
-  <div class="posts col-md-9">
+  <div class="new-post col-md-9">
     <%= bootstrap_form_for(resource, as: resource_name, url: update_profile_path(current_user), html: { method: :put }) do |f| %>
         <%= f.text_field :nickname, autofocus: true %>
         <%= f.email_field :email%>

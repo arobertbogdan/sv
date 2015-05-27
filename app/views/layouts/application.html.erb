@@ -29,7 +29,7 @@
           </ul>
         </nav> <!-- end of categories -->
 
-        <h1 class="text-center headline">THEInternet</h1>
+        <h1 class="text-center headline">THEinternet</h1>
         <nav class="secondary-navigation clearfix">
           <a href="<%= root_url %>" class="to-reddit pull-left">reddit</a>
           <ul class="list-inline filters">
@@ -47,9 +47,10 @@
           </ul>
           <% if user_signed_in? %>
               <div class="logout">
-                <%= link_to 'Profile',  profile_path(current_user.id)  %>
-                <%= link_to '',  edit_profile_path(current_user.id), class: 'glyphicon glyphicon glyphicon-cog'  %>
-                <%= link_to '',  destroy_user_session_path, :method => :delete, class: 'glyphicon glyphicon-log-out' %>
+                <%= link_to current_user.nickname,  profile_path(current_user.id), class: 'profile-button icon'  %>
+                <%= link_to '',  edit_profile_path(current_user.id), class: 'glyphicon glyphicon-envelope profile-button icon'  %>
+                <%= link_to '',  edit_profile_path(current_user.id), class: 'glyphicon glyphicon-cog profile-button icon'  %>
+                <%= link_to '',  destroy_user_session_path, :method => :delete, class: 'glyphicon glyphicon-log-out profile-button icon' %>
               </div>
           <% else %>
             <div class="sign-in">
