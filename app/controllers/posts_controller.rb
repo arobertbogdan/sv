@@ -39,13 +39,13 @@ class PostsController < ApplicationController
     @post = current_user.posts.build(post_params)
     @post.save
 
-
-    begin
-      object = ::LinkThumbnailer.generate(@post.media)
-      @post.thumbnail = !object.images.first.nil? ? object.images.first.src : "/assets/miss-thumb.png"
-    rescue Net::HTTP::Persistent::Error
+    if @post.errors.empty?
+      begin
+        object = ::LinkThumbnailer.generate(@post.media)
+        @post.thumbnail = !object.images.first.nil? ? object.images.first.src : "/assets/miss-thumb.png"
+      rescue Net::HTTP::Persistent::Error
+      end
     end
-
 
     respond_to do |format|
       if @post.save
@@ -56,7 +56,7 @@ class PostsController < ApplicationController
         format.json { render json: @post.errors, status: :unprocessable_entity }
       end
     end
-  end
+end
 
   # PATCH/PUT /posts/1
   # PATCH/PUT /posts/1.json

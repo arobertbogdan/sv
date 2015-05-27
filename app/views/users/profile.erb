@@ -50,7 +50,7 @@
             <% if user_signed_in? %>
                 <span class="badge"><%= follow.count_new_posts @user %></span>
             <% end %>
-            <%= image_tag follow.get_avatar %>
+            <%= image_tag follow.get_avatar, class: 'follow-avatar' %>
             <%= link_to follow.nickname, profile_path(:id => follow.follow_id) %>
           </li>
       <% end %>

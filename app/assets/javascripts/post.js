@@ -19,20 +19,20 @@ ready = function() {
         }
     });
 
-    $(".vote-up").on('click', function(){
+    $(".vote-up").on('click', function(e){
         $.ajax({
             url: '/posts/' + this.getAttribute("post-id") + '/upvote',
             type: 'PUT'
         }).done(function (data){
-            console.log(data)
+            location.reload();
         });
     });
-    $(".vote-down").on('click', function(){
+    $(".vote-down").on('click', function(e){
         $.ajax({
             url: '/posts/' + this.getAttribute("post-id") + '/downvote',
             type: 'PUT'
         }).done(function (data){
-            console.log(data)
+            location.reload();
         });
     });
 

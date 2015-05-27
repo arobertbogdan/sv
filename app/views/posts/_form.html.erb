@@ -1,7 +1,7 @@
 <%= bootstrap_form_for (@post) do |f| %>
     <%= f.text_field :title%>
     <%= f.text_area :description%>
-    <%= f.text_field :media%>
+    <%= f.text_field :media, label: "Media (URL)"%>
     <%= f.collection_select :category_id, @categories[1..@categories.count], :id, :name, {:include_blank => false}, {:class => 'form-control'} %>
     <%= f.submit 'Submit', class: 'btn btn-primary btn-lg pull-right' %>
 <% end %>

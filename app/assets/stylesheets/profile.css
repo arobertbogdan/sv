@@ -105,6 +105,11 @@ body {
     margin-left: -2px;
 }
 
+.follow-avatar{
+    width: 30px;
+    height: 30px;
+}
+
 /* Profile Content */
 .profile-content {
     padding: 20px;
