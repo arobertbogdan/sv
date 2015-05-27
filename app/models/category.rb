@@ -16,6 +16,21 @@ class Category < ActiveRecord::Base
     Subscribe.where(:category_id => self.id).count
   end
 
+  def get_online_readers
+    subs = Subscribe.where(:category_id => self.id)
+    delay = 180
+    counter = 0
+    subs.each do |subscribe|
+      activity = Activity.find_by(:user_id => subscribe.user_id)
+      unless activity.nil?
+        if (Time.now - activity.updated_at).abs.to_i <= delay
+          counter += 1
+        end
+      end
+    end
+    counter
+  end
+
   def self.deliver_subscribe_mail subscribe
     SubscribeMailer.subscribe_on_category(subscribe.user, subscribe.category).deliver_now
   end

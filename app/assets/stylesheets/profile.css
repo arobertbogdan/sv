@@ -111,6 +111,9 @@ body {
     background: #fff;
     min-height: 460px;
 }
-.btn-sm{
+.block-div{
     margin-top: 10px;
+}
+.block-div span{
+    font-size: 14px;
 }

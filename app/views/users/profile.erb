@@ -31,6 +31,7 @@
       <% end %>
     </div>
   <aside>
+    <% if user_signed_in? %>
     <div class="collapse" id="collapseExample">
       <div class="well">
         <%= bootstrap_form_for :user, url: avatar_path(@user.id), html: { method: :put, :multipart => true } do |form| %>
@@ -39,6 +40,7 @@
         <% end %>
       </div>
     </div>
+        <% end %>
 
     <%= link_to 'Submit New Content',  new_post_path, class: 'btn btn-primary btn-block'  %>
     <h4 class="profile-usertitle-job">SUBSCRIPTIONS</h4>

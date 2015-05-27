@@ -32,10 +32,12 @@
       <% end %>
       <%= link_to 'Submit New Content',  new_post_path, class: 'btn btn-primary btn-block'  %>
       <% if @category != nil%>
-          <a class="btn btn-default btn-sm" style="<%= @category.is_subscribed(current_user) ? "" : "display: none" %>" id="unsubscribe" category-id=<%= @category.id %> >Unsubscribe</a>
-          <a class="btn btn-primary btn-sm" style="<%= @category.is_subscribed(current_user) ? "display: none" : "" %>" id="subscribe" category-id=<%= @category.id %> >Subscribe</a>
-          <span><%= @category.get_readers %> readers</span>
-          <span><%= @category.get_readers %> readers</span>
+          <div class="block-div">
+            <a class="btn btn-default btn-sm" style="<%= @category.is_subscribed(current_user) ? "" : "display: none" %>" id="unsubscribe" category-id=<%= @category.id %> >Unsubscribe</a>
+            <a class="btn btn-primary btn-sm" style="<%= @category.is_subscribed(current_user) ? "display: none" : "" %>" id="subscribe" category-id=<%= @category.id %> >Subscribe</a>
+            <span><%= @category.get_readers %> readers</span>
+            <span>(~<%= @category.get_online_readers %> here)</span>
+          </div>
       <% end %>
     </aside>
   </div> <!-- end of sidebar -->
