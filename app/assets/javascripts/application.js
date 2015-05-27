@@ -12,4 +12,9 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require_tree .
+//= require ./js/bootstrap.min
+//= require ./bootstrap-filestyle.min
+//= require ./jquery.textcomplete
+//= require ./emoji
+//= require ./ui
+//= require ./post

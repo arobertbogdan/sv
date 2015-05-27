@@ -1,0 +1,49 @@
+$(document).ready(function() {
+    var emojies = [
+        <% Emoji.all.each do |emoji| %> '<%= emoji.name %>', <% end %>
+    ];
+
+    var emojies_path = [
+        <% Emoji.all.each do |emoji| %> '<%= emoji.image_filename %>', <% end %>
+    ];
+    // reply comment
+    if($('#comment-form')) {
+        var form = $('#comment-form');
+        $('.reply').on('click', function(e) {
+            e.preventDefault();
+            var $this = $(this),
+                    cancelBtn = '<button type="button" class="btn btn-default pull-right btn-cancel">Cancel</button>',
+                    commentId = '<input type="hidden" id="parent" name="parent_id" value="'+ $this.attr('id') +'">';
+
+            $(commentId).appendTo(form.find('.form-group'));
+            $this.after(form.html());
+            $this.next().find('textarea').textcomplete([
+                {
+                    match: /\B:([\-+\w]*)$/,
+                    search: function (term, callback) {
+                        callback($.map(emojies, function (emoji) {
+                            return emoji.indexOf(term) === 0 ? emoji : null;
+                        }));
+                    },
+                    template: function (value) {
+                        path = emojies_path[emojies.indexOf(value)];
+                        return '<img src="/images/emoji/'+ path +'" style="vertical-align:middle" width="20" height="20"> ' +  value;
+                    },
+                    replace: function (value) {
+                        return ':' + value + ': ';
+                    },
+                    index: 1
+                }
+            ]);
+            $this.next().append(cancelBtn);
+            $this.prop('disabled', true);
+
+            $('.btn-cancel').on('click', function(e) {
+                e.preventDefault();
+                $(this).parent().remove();
+                $this.prop('disabled', false);
+            });
+        });
+    }
+
+});
