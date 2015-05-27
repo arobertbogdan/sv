@@ -2,7 +2,6 @@ $(document).ready(function() {
 	// reply comment
 	if($('#comment-form')) {
 		var form = $('#comment-form');
-
 		$('.reply').on('click', function(e) {
 			e.preventDefault();
 			var $this = $(this),
