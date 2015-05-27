@@ -9,7 +9,7 @@
 <div class="col-md-3"> <!-- sidebar -->
   <div class="profile-sidebar">
     <div class="profile-userpic">
-      <a data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+      <a data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" data-toggle="tooltip" data-placement="left" title="Click to change your profile picture" >
         <%= image_tag @user.avatar.url(:medium), class: 'img-responsive' %>
       </a>
     </div>
