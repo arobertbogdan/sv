@@ -4,6 +4,8 @@ class Admin::BaseController < ApplicationController
   end
 
   def authenticate_admin_token
-    authenticate_with_http_token do |token, options| @auth_user = User.find_by(auth_token: token, admin: true) end
+    authenticate_with_http_token do |token, options|
+      @auth_user = User.find_by(auth_token: token, admin: true)
+    end
   end
 end

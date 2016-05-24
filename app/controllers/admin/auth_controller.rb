@@ -1,4 +1,5 @@
 class Admin::AuthController < Admin::BaseController
+
   def token
     @user = User.find_by_email(params[:email])
     if @user && @user.valid_password?(params[:password])

@@ -32,6 +32,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     post 'auth/token', to: 'auth#token'
+    get 'posts', to: 'posts#all'
   end
 
   get ':filter', to: 'home#index', as: 'filter'
