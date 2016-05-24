@@ -56,7 +56,7 @@ class PostsController < ApplicationController
         format.json { render :json => {:post => @post, :status => 200} }
       else
         format.html { render :new }
-        format.json { render :json => {:post => @post, :status => 200} }
+        format.json { render :json => {:post => @post, :status => 400 } }
       end
     end
 end
@@ -70,7 +70,7 @@ end
         format.json { render :json => {:post => @post, :status => 200} }
       else
         format.html { render :edit }
-        format.json { render :json => {:post => @post, :status => 200} }
+        format.json { render :json => {:post => @post, :status => 400 } }
       end
     end
   end
