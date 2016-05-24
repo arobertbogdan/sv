@@ -20,6 +20,10 @@ class PostsController < ApplicationController
 
   # GET /posts/new
   def new
+    if current_user == nil
+      return redirect_to root_path
+    end
+
     @post = current_user.posts.build
   end
 
