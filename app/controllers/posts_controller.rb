@@ -39,7 +39,11 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.json
   def create
-    @post = @auth_user.posts.build(post_params)
+    if current_user.!= nil
+      @post = current_user.posts.build(post_params)
+    else
+      @post = @auth_user.posts.build(post_params)
+    end
     @post.save
 
     if @post.errors.empty?
@@ -80,18 +84,28 @@ end
   def destroy
     @post.destroy
     respond_to do |format|
-      format.html { redirect_to profile_path(@auth_user.id), notice: 'Post was successfully destroyed.' }
-      format.json { head :no_content }
+      format.html { redirect_to profile_path(current_user.id), notice: 'Post was successfully destroyed.' }
+      format.json { render :json => {notice: 'Post was successfully destroyed.', :status => 200} }
     end
   end
 
   def upvote
+    if current_user.!= nil
+    @post.up_vote current_user
+    else
     @post.up_vote @auth_user
+    end
+
     render :json => {:data => "OK", :status => 200}
   end
 
   def downvote
-    @post.down_vote @auth_user
+    if current_user.!= nil
+      @post.down_vote current_user
+    else
+      @post.down_vote @auth_user
+    end
+
     render :json => {:data => "OK", :status => 200}
   end
 
@@ -103,7 +117,6 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      p params
       params.permit(:title, :description, :media, :category_id)
     end
 end

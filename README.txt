@@ -24,6 +24,11 @@ Posts [GET/POST/PUT]
 		Header attribute -> Authorization: Token token=[auth_token]
 		application/x-www-form-urlencoded -> title, description, media, category_id
 
+	DELETE http://localhost:3000/posts/[post_id].json
+		Header attribute -> Authorization: Token token=[auth_token]
+
+	PUT http://localhost:3000/posts/[post_id]/[upvode | downvote]
+		Header attribute -> Authorization: Token token=[auth_token]
 
 Comments [POST/PUT/DELETE]
 	POST http://localhost:3000/posts/[post_id]/comments/reply.json
