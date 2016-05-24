@@ -132,6 +132,7 @@ ActiveRecord::Schema.define(version: 20150527071501) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "nickname",               default: "", null: false
+    t.string   "auth_token",                          null: false
     t.string   "avatar_file_name"
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"

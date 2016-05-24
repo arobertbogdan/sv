@@ -1,8 +1,10 @@
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :exception
+
+  protect_from_forgery with: :null_session
   before_action :categories, :user, :user_activity, :authenticate
+  
   def categories
     @categories = Category.all
   end
@@ -23,15 +25,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  protected
   def authenticate
     authenticate_token || render_unauthorized
   end
 
   def authenticate_token
-    authenticate_with_http_token do |token, options|
-      User.find_by(auth_token: token)
-    end
+    authenticate_with_http_token do |token, options| @auth_user = User.find_by(auth_token: token) end
   end
 
   def render_unauthorized
