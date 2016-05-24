@@ -1,6 +1,8 @@
 class PostsController < ApplicationController
+  protect_from_forgery with: :null_session
   before_action :set_post, only: [:show, :edit, :update, :destroy, :upvote, :downvote]
-  before_action :authenticate_user!, :except => [:show, :index]
+  #before_action :authenticate_user!, :except => [:show, :index]
+  before_action :authenticate, :except => [:show, :index]
   # GET /posts/1
   # GET /posts/1.json
   def show
@@ -12,6 +14,7 @@ class PostsController < ApplicationController
     end
     respond_to do |format|
       format.html
+      format.json { render :json => {:post => @post, :comments => @comments, :status => 200} }
     end
   end
 
@@ -36,7 +39,7 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.json
   def create
-    @post = current_user.posts.build(post_params)
+    @post = @auth_user.posts.build(post_params)
     @post.save
 
     if @post.errors.empty?
@@ -50,10 +53,10 @@ class PostsController < ApplicationController
     respond_to do |format|
       if @post.save
         format.html { redirect_to profile_path(current_user.id), notice: 'Post was successfully created.' }
-        format.json { render :show, status: :created, location: @post }
+        format.json { render :json => {:post => @post, :status => 200} }
       else
         format.html { render :new }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
+        format.json { render :json => {:post => @post, :status => 200} }
       end
     end
 end
@@ -64,10 +67,10 @@ end
     respond_to do |format|
       if @post.update(post_params)
         format.html { redirect_to profile_path(current_user.id), notice: 'Post was successfully updated.' }
-        format.json { render :show, status: :ok, location: @post }
+        format.json { render :json => {:post => @post, :status => 200} }
       else
         format.html { render :edit }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
+        format.json { render :json => {:post => @post, :status => 200} }
       end
     end
   end
@@ -77,18 +80,18 @@ end
   def destroy
     @post.destroy
     respond_to do |format|
-      format.html { redirect_to profile_path(current_user.id), notice: 'Post was successfully destroyed.' }
+      format.html { redirect_to profile_path(@auth_user.id), notice: 'Post was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   def upvote
-    @post.up_vote current_user
+    @post.up_vote @auth_user
     render :json => {:data => "OK", :status => 200}
   end
 
   def downvote
-    @post.down_vote current_user
+    @post.down_vote @auth_user
     render :json => {:data => "OK", :status => 200}
   end
 
@@ -100,6 +103,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.require(:post).permit(:title, :description, :media, :category_id)
+      p params
+      params.permit(:title, :description, :media, :category_id)
     end
 end
