@@ -15,8 +15,8 @@ Category.create(name: "books")
 Category.create(name: "news")
 Category.create(name: "sports")
 
-user = User.create! :nickname => 'user1', :email => 'user1@gmail.com', :password => '1q2w3e4r5t', :password_confirmation => '1q2w3e4r5t'
-user2 = User.create! :nickname => 'user2', :email => 'user2@gmail.com', :password => '1q2w3e4r5t', :password_confirmation => '1q2w3e4r5t'
+user = User.create! :nickname => 'dev1', :email => 'dev@gmail.com', :password => 'devdevdev', :password_confirmation => 'devdevdev'
+user2 = User.create! :nickname => 'dev2', :email => 'dev2@gmail.com', :password => 'devdevdev', :password_confirmation => 'devdevdev'
 
 Follow.create(:user_id => user.id, :follow_id => user2.id)
 

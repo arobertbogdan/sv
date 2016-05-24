@@ -30,6 +30,10 @@ Rails.application.routes.draw do
     get ':category(/:filter)', to: 'home#index', as: 'category_filter'
   end
 
+  namespace :admin do
+    post 'auth/token', to: 'auth#token'
+  end
+
   get ':filter', to: 'home#index', as: 'filter'
   root 'home#index'
 
