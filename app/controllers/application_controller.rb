@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate
-    if  request.format.json?
+    if request.format.json?
       return authenticate_token || render_unauthorized
     end
     :authenticate_user!
