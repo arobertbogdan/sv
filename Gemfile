@@ -19,7 +19,7 @@ gem 'friendly_id'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 
-gem 'link_thumbnailer'
+gem 'link_thumbnailer', '~> 3.2.0'
 gem 'paperclip', '~> 4.2.1'
 gem 'bootstrap-sass'
 gem 'bootstrap_form'

@@ -117,6 +117,9 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.permit(:title, :description, :media, :category_id)
+      if request.format.json?
+        return params.permit(:title, :description, :media, :category_id)
+      end
+      params.require(:post).permit(:title, :description, :media, :category_id)
     end
 end
