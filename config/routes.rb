@@ -17,6 +17,8 @@ Rails.application.routes.draw do
     post 'comments/reply', to: 'comments#reply', as: 'comment_reply'
   end
 
+  post 'auth/token', to: 'auth#token'
+
   put 'posts/:id/upvote', to: 'posts#upvote'
   put 'posts/:id/downvote', to: 'posts#downvote'
 
